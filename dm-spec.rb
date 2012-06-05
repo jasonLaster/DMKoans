@@ -1,4 +1,6 @@
 require 'pry'
+require 'plymouth'
+
 require_relative 'dm-code'
 
 
@@ -46,11 +48,41 @@ describe "Lesson 1 -- Getting Setup" do
 end
 
 
+# Before we start building our puppy school, we'll first define a puppy and all the other assciated models
+# DataMapper makes this really easy, so it should be a lot of fun. 
+
 describe "Lesson 2 -- Define a Puppy" do
   
   # # 5. Define models and properties
-  # The Post model is going to need to be persistent, so we'll include DataMapper::Resource. The convention with model names is to use the singular, not plural version...but that's just the convention, you can do whatever you want.
+  # The Post model is going to need to be persistent, so we'll include DataMapper::Resource. 
+  # The convention with model names is to use the singular, not plural version...but that's just the convention, you can do whatever you want.
+
+  # Our Puppy School app has several classes that you'll want to build
+
+  # Puppy 
+    # id: Serial
+    # name: String
+    # birthday: DateTime
+    # breed: String
+  # Person
+    # id: Serial
+    # name: String
+  # Course
+    # id: Serial
+    # topic: String
+
+  # see http://datamapper.org/docs/properties.html
+
   it "Step 5 -- Define models and properties" do 
+    
+    entities = {:Puppy => [:id, :name, :birthday, :breed], :Person => [:id, :name], :Course => [:id, :topic]}
+
+    # 1. the model should be defined
+    # 2. the properties should be defined
+    entities.each do |entity, properties|
+      model = Kernel.const_get(entity)
+      model.properties.map(&:name).sort.should == properties.sort
+    end
   end
   
   # # 6. Setup associations
