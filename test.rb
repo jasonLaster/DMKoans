@@ -17,6 +17,7 @@ describe "Lesson 1" do
 
   it "Step 1" do
     DataMapper.should exist
+#    2.should == 2
   end
 
 end

@@ -1,34 +1,18 @@
 require 'pry'
-
 require "yaml"
 
+output_msg = `rspec test.rb --require ./koans/abort_on_first_failure_formatter.rb --format AbortOnFirstFailureFormatter`
 
-curr_dir = File.expand_path(".")
-output_msg = `rspec test.rb --require #{curr_dir}/koans/abort_on_first_failure_formatter.rb --format AbortOnFirstFailureFormatter`  
+failed_test = YAML::load(output_msg)
 
-failure = YAML::load(output_msg)
+message = "You have done well."
 
-lesson = failure[:lesson]
-step = failure[:step]
-exception = failure[:exception]
-
-binding.pry
-
-message = 
-case lesson
-when "Lesson 1"
-  case step
-  when "Step 1"
-    case exception
-    when "uninitialized constant DataMapper"
-      "DataMapper wasn't loaded"
-      
-    else
-      "I don't know what you did. But it was bad."
-    end
-  end
-else
-  "You have done well."
+if failed_test
+  lesson = failed_test[:lesson]
+  step = failed_test[:step]
+  exception = failed_test[:exception]
+  
+  message = "In #{lesson}, on #{step}, an error of #{exception} occured"
 end
 
 puts message
