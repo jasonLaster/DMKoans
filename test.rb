@@ -13,24 +13,10 @@ require_relative 'puppy'
 
 
 
-describe "setup datamapper" do
+describe "Lesson 1" do
 
-  it "addition 1" do
-    (2+2).should eq(4)
-  end
-
-  it "DataMapper should be in memory" do
+  it "Step 1" do
     DataMapper.should exist
   end
-
-  it "addition 2" do
-    (2+2).should eq(4)
-  end
-
-  it "bad addition" do
-    (2+2).should eq(2)
-  end
-
-
 
 end

@@ -1,3 +1,6 @@
+#require "pry"
+require "yaml"
+
 require 'rspec/core/formatters/progress_formatter'
 
 class AbortOnFirstFailureFormatter < RSpec::Core::Formatters::BaseFormatter
@@ -7,20 +10,23 @@ class AbortOnFirstFailureFormatter < RSpec::Core::Formatters::BaseFormatter
   end
 
   def example_failed(example)
-    exception_msg = exception_msg(example.exception)
-    @output.puts exception_msg
+ 
+    failure_data = Hash.new
+    failure_data[:lesson] = example.metadata[:example_group][:description_args][0]
+    failure_data[:step] = example.description
+    failure_data[:exception] = example.exception.to_s
+    
+    @output.puts YAML::dump(failure_data)
+    
     quit_rspec
   end
-end
 
 private
 
-def quit_rspec
-  RSpec.wants_to_quit = true
-  exit!(0)
+  def quit_rspec
+    RSpec.wants_to_quit = true
+    exit!(0)
+  end
+
 end
 
-def exception_msg(exc)
-  # exc.to_s.split(/ /)[0..-2].join(" ")
-  exc.to_s
-end
